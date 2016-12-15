@@ -6,7 +6,7 @@ Please update Angular 2 to latest version to avoid any unexpected issues.
 
 ![Examples](toastr-examples.jpg?raw=true "Default Toasts")
 
-
+![Examples](pushnotification?raw=true "Push notification Toasts")
 
 astr/bundles/ng2-toastr.min.js', since adding 'import {ToastModule} from 'ng2-toastr/ng2-toastr';' to your module file (below) will allow it to be autoloaded.
 
@@ -113,3 +113,48 @@ const ToastyPositions = [
     wait,
     warning,
     error,
+
+
+# Push Notifications 
+If you arn't familiar with push notifications you can read more about them on the [Mozilla developer network](https://developer.mozilla.org/en-US/docs/Web/API/Notification).
+Based on push notification of [Fauc](http://flauc.github.io/angular2-notifications/)
+
+## Requesting Permission
+To request permission from the user to display push notifications call the `requestPushNotificationPermission()` method on the `ToastyService`.
+```ts
+this.toastyService.requestPushNotificationPermission();
+```
+
+# Create Notification
+
+You can create a permission calling the `create(title: string, options: PushNotification)` method, like this: 
+
+```ts
+this.toastyService.createPushNotification("Test", {body: "something"}).subscribe(
+            response => console.log(response),
+            error => console.log(error)
+        )
+```
+
+## Options
+
+The following are options that can be passed to the options parameter: 
+
+```ts
+interface PushNotification {
+    body?: string
+    icon?: string
+    tag?: string
+    renotify?: boolean
+    silent?: boolean
+    sound?: string
+    noscreen?: boolean
+    sticky?: boolean
+    dir?: 'auto' | 'ltr' | 'rtl'
+    lang?: string
+    vibrate?: number[]
+}
+```
+
+Options correspond to the Notification interface of the Notification API:
+[Mozilla developer network](https://developer.mozilla.org/en-US/docs/Web/API/Notification).
