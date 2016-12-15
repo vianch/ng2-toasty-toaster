@@ -6,7 +6,7 @@ Please update Angular 2 to latest version to avoid any unexpected issues.
 
 ![Examples](toastr-examples.jpg?raw=true "Default Toasts")
 
-![Examples](pushnotification?raw=true "Push notification Toasts")
+![Examples](pushnotification.png?raw=true "Push notification Toasts")
 
 astr/bundles/ng2-toastr.min.js', since adding 'import {ToastModule} from 'ng2-toastr/ng2-toastr';' to your module file (below) will allow it to be autoloaded.
 
