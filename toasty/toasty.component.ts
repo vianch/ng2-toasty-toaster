@@ -2,17 +2,18 @@
 // This project is licensed under the terms of the MIT license.
 // based on https://github.com/akserg/ng2-toasty AND https://github.com/CodeSeven/toastr
 
-import { Component, Input, OnInit, OnDestroy } from "@angular/core";
+import {Component, Input, OnInit, OnDestroy, Output} from "@angular/core";
 
 import {ToastyPositions, Toast, ToastyConfig} from "./toasty.models";
 import {ToastyService} from "./toasty.service";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: "ng2-toasty",
     template: `
-        <div id="toasty" [ngClass]="[position]">
+        <div id="toasty" [ngClass]="[position]" *ngIf="toasts.length > 0">
                
-            <div *ngFor="let toast of toasts" class="toast" [ngClass]="[toast.type, toastyConfig.theme]">
+            <div *ngFor="let toast of toasts" class="toast animated bounceInUp" [ngClass]="[toast.type, toastyConfig.theme]">
                 <div *ngIf="toastyConfig.showClose" class="toast-close-button" (click)="closeToastEvent($event, toast.id)"></div>
                 <div *ngIf="toast.title || toast.message" class="toast-text">
                     <span *ngIf="toast.title" class="toast-title">{{toast.title}}</span>
@@ -28,6 +29,8 @@ export class ToastyComponent  implements OnInit, OnDestroy {
     public toastyConfig: ToastyConfig;
     public toasts: Array<Toast>;
     private positionValue: string;
+    private toastSubscription: Subscription;
+    private clearToastSubscription: Subscription;
 
     @Input()
     public set position(value: string)  {
@@ -65,12 +68,12 @@ export class ToastyComponent  implements OnInit, OnDestroy {
     }
 
     private registerSubscribers(): void {
-        this.toastyService.getToasts().subscribe((toast: Toast) => {
+        this.toastSubscription = this.toastyService.getToasts().subscribe((toast: Toast) => {
             this.setToasts(toast);
             this.toastTimeOut(toast.id);
         });
 
-        this.toastyService.getClearAllToast().subscribe(() => {
+        this.clearToastSubscription = this.toastyService.getClearAllToast().subscribe(() => {
             this.toasts = [];
         });
     }
@@ -100,5 +103,7 @@ export class ToastyComponent  implements OnInit, OnDestroy {
     private destroyAllToasts(): void {
         this.toasts = [];
         delete this.toasts;
+        this.toastSubscription.unsubscribe();
+        this.clearToastSubscription.unsubscribe();
     }
 }

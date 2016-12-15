@@ -10,7 +10,7 @@ class ToastyConfig {
         this.position = ToastyPositions[0];
         this.showClose = true;
         this.theme = ToastyThemes[ToastyThemes.colored];
-        this.timeout = 5000;
+        this.timeout = 3000;
     }
 }
 
@@ -58,3 +58,23 @@ export {
     Toast,
 }
 
+export interface PushNotification {
+    body?: string;
+    icon?: string;
+    tag?: string;
+    renotify?: boolean;
+    silent?: boolean;
+    sound?: string;
+    noscreen?: boolean;
+    sticky?: boolean;
+    dir?: "auto" | "ltr" | "rtl";
+    lang?: string;
+    vibrate?: number[];
+}
+
+export enum PushPermission {
+    granted,
+    denied,
+    default,
+}
+export type Permission = "denied" | "granted" | "default";
